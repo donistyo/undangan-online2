@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import {
-  FaHome,
-  FaHeart,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaEnvelope,
   FaPlay,
   FaPause,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 
 import "./App.css";
@@ -17,7 +14,7 @@ import Couple from "./components/Couple";
 import Event from "./components/Event";
 import Maps from "./components/Maps";
 import RSVP from "./components/RSVP";
-import OurStory from "./components/OurStroy";
+import OurStory from "./components/OurStory";
 import Gallery from "./components/Galery";
 import ThankYou from "./components/ThankYou";
 
@@ -26,51 +23,89 @@ function App() {
   const [isInvitationOpen, setIsInvitationOpen] = useState(false);
 
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [autoScrollEnabled] = useState(true);
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const [offsetY, setOffsetY] = useState(0);
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(new Audio("/wedding-music.mp3"));
+  const audioRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Loading Screen
   useEffect(() => {
+    audioRef.current = new Audio("/wedding-music.mp3");
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
   }, []);
 
   // Handle Play/Pause
-  const toggleMusic = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(e => console.log("Play failed", e));
+  const toggleMusic = async () => {
+    try {
+      if (!audioRef.current) return;
+
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      }
+    } catch (err) {
+      console.error("Audio gagal diputar:", err);
     }
-    setIsPlaying(!isPlaying);
+  };
+
+  const handleNavClick = () => {
+    setAutoScrollEnabled(false);
+    setMenuOpen(false);
   };
 
   // Open Invitation
-  const handleOpenInvitation = () => {
-  setIsInvitationOpen(true);
+  const handleOpenInvitation = async () => {
+    setIsInvitationOpen(true);
 
-  audioRef.current
-    .play()
-    .then(() => {
-      setIsPlaying(true);
-    })
-    .catch((error) => {
+    try {
+      if (audioRef.current) {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      }
+    } catch (error) {
       console.log("Autoplay dicegah:", error);
-    });
+    }
 
-  setTimeout(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, 100);
-};
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 100);
+  };
+
+  useEffect(() => {
+    const stopAutoScroll = () => {
+      setAutoScrollEnabled(false);
+    };
+
+    window.addEventListener("wheel", stopAutoScroll);
+    window.addEventListener("touchstart", stopAutoScroll);
+
+    return () => {
+      window.removeEventListener("wheel", stopAutoScroll);
+      window.removeEventListener("touchstart", stopAutoScroll);
+    };
+  }, []);
 
   // Reveal Animation
   useEffect(() => {
@@ -203,6 +238,83 @@ function App() {
             }px`,
           }}
         >
+          <div className="floating-menu">
+            <button
+              className="menu-toggle"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ? <FaTimes /> : <FaBars />}
+            </button>
+
+            <div className={`menu-dropdown ${menuOpen ? "show" : ""}`}>
+              <a
+                href="#home"
+                onClick={handleNavClick}
+              >
+                Home
+              </a>
+
+              <a
+                href="#mempelai"
+                onClick={() => {
+                  handleNavClick();
+                  setMenuOpen(false);
+                }}
+              >
+                Mempelai
+              </a>
+
+              <a
+                href="#acara"
+                onClick={() => {
+                  handleNavClick();
+                  setMenuOpen(false);
+                }}
+              >
+                Acara
+              </a>
+
+              <a
+                href="#story"
+                onClick={() => {
+                  handleNavClick();
+                  setMenuOpen(false);
+                }}
+              >
+                Our Story
+              </a>
+
+              <a
+                href="#gallery"
+                onClick={() => {
+                  handleNavClick();
+                  setMenuOpen(false);
+                }}
+              >
+                Gallery
+              </a>
+
+              <a
+                href="#maps"
+                onClick={() => {
+                  handleNavClick();
+                  setMenuOpen(false);
+                }}
+              >
+                Maps
+              </a>
+
+              <a
+                href="#rsvp"
+                onClick={() => {
+                  handleNavClick();
+                  setMenuOpen(false);
+                }}
+              >
+                RSVP
+              </a>
+            </div>
+          </div>
           {/* Progress Bar */}
           <div className="scroll-progress">
             <div
@@ -278,33 +390,6 @@ function App() {
               <ThankYou />
             </section>
           </div>
-
-          <nav className="bottomNav">
-            <a href="#home">
-              <FaHome />
-              <span>Home</span>
-            </a>
-
-            <a href="#mempelai">
-              <FaHeart />
-              <span>Mempelai</span>
-            </a>
-
-            <a href="#acara">
-              <FaCalendarAlt />
-              <span>Acara</span>
-            </a>
-
-            <a href="#maps">
-              <FaMapMarkerAlt />
-              <span>Maps</span>
-            </a>
-
-            <a href="#rsvp">
-              <FaEnvelope />
-              <span>RSVP</span>
-            </a>
-          </nav>
         </div>
       )}
     </div>
