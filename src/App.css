@@ -1920,3 +1920,120 @@ body{
   background:#f8f6f1;
   padding-left:24px;
 }
+
+.guestbook-section {
+  margin-top: 35px;
+}
+
+.guestbook-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #8a6d3b;
+  font-size: 1.3rem;
+  font-family: "Playfair Display", serif;
+}
+
+.guestbook-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  max-height: 450px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.guestbook-item{
+  background: #fff;
+  border: 1px solid #f0e7d7;
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  transition: all .25s ease;
+}
+
+.guestbook-item:hover{
+  transform: translateY(-2px);
+}
+
+.guestbook-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.guestbook-header strong{
+  font-size: 14px;
+  color: #5f4b32;
+}
+
+.guestbook-message{
+  font-size: 13px;
+  line-height: 1.5;
+  color: #666;
+  margin: 6px 0;
+}
+
+.guestbook-item small{
+  font-size: 11px;
+  color: #999;
+}
+
+.guest-status{
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.guest-status.hadir{
+  background: #e8f7ee;
+  color: #2e8b57;
+}
+
+.guest-status.tidak-hadir{
+  background: #fdeaea;
+  color: #c0392b;
+}
+
+.guestbook-empty {
+  text-align: center;
+  color: #999;
+}
+
+@keyframes fadeGuest {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rsvp-success {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 14px 22px;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  z-index: 9999;
+  animation: fadeInUp .35s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
