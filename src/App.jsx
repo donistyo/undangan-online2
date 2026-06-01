@@ -75,6 +75,7 @@ function App() {
   // Open Invitation
   const handleOpenInvitation = async () => {
     setIsInvitationOpen(true);
+    setAutoScrollEnabled(true); // ⬅️ WAJIB
 
     try {
       if (audioRef.current) {
@@ -86,10 +87,7 @@ function App() {
     }
 
     setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);
   };
 
@@ -164,33 +162,23 @@ function App() {
     if (!isInvitationOpen) return;
     if (!autoScrollEnabled) return;
 
-    console.log("AUTO SCROLL SMOOTH START");
+    let current = 0;
+    const sections = document.querySelectorAll("section");
 
-    const speed = 0.5; // px per frame
-
-    const autoScroll = setInterval(() => {
-
-      const scrollTop =
-        window.pageYOffset;
-
-      const maxScroll =
-        document.documentElement.scrollHeight -
-        window.innerHeight;
-
-      if (scrollTop >= maxScroll) {
-        clearInterval(autoScroll);
+    const interval = setInterval(() => {
+      if (current >= sections.length) {
+        clearInterval(interval);
         return;
       }
 
-      window.scrollTo({
-        top: scrollTop + speed,
-        behavior: "auto",
+      sections[current].scrollIntoView({
+        behavior: "smooth",
       });
 
-    }, 16);
+      current++;
+    }, 3000); // delay per section
 
-    return () => clearInterval(autoScroll);
-
+    return () => clearInterval(interval);
   }, [isInvitationOpen, autoScrollEnabled]);
 
   return (

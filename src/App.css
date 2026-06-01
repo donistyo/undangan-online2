@@ -1251,27 +1251,19 @@ textarea.rsvp-input{
 }
 
 html{
-  scroll-behavior:smooth;
+  scroll-behavior: auto;
 }
 
-.fade-section{
-  opacity:0;
+.fade-section {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: all 0.8s ease;
+  will-change: transform, opacity;
 }
 
-.fade-section.show{
-  animation:sectionReveal 1s ease forwards;
-}
-
-.bottomNav a{
-  transition:all .3s ease;
-}
-
-.bottomNav a:hover{
-  transform:translateY(-2px);
-}
-
-.bottomNav a:active{
-  transform:scale(.92);
+.fade-section.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .curtain-card{
@@ -1417,7 +1409,7 @@ html{
 
   opacity: 0;
   transform: translateY(30px);
-  animation: storyReveal 0.8s ease forwards;
+  animation: storyReveal 0.6s ease forwards;
 }
 
 .story-item::before {
@@ -1544,9 +1536,9 @@ html{
    PREMIUM SCROLL SYSTEM
 ==================================== */
 
-html,
-body{
-  scroll-behavior:smooth;
+html, body {
+  overflow-y: auto !important;
+  scroll-behavior: auto;
 }
 
 body{
@@ -1613,9 +1605,7 @@ body{
 
 .main-menu-wrapper{
   position:relative;
-  overflow:hidden;
-
-  min-height:100vh;
+  overflow: visible;
 }
 
 .main-menu-wrapper::before{
@@ -2036,4 +2026,43 @@ body{
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+
+.story-wrapper {
+  text-align: center;
+  position: relative;
+}
+
+.story-item-card {
+  background: #fffdf8;
+  padding: 25px;
+  border-radius: 20px;
+  border: 1px solid #ece5d8;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+
+  animation: fadeStory 0.6s ease;
+}
+
+@keyframes fadeStory {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.story-nav {
+  margin-top: 15px;
+}
+
+.story-nav button {
+  background: #b8964d;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  cursor: pointer;
 }
