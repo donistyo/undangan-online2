@@ -206,7 +206,7 @@ function App() {
 
         <div className="loader-content">
           <p>Wedding of</p>
-          <h1>Doni & Naura</h1>
+          <h1>Adam & Nara</h1>
           <div className="loading-bar"></div>
         </div>
       </div>
