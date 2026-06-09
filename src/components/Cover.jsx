@@ -17,7 +17,7 @@ function Cover({ openInvitation }) {
       <p className="welcome-text">YOU ARE CORDIALLY INVITED TO</p>
       <p className="welcome-text" style={{fontWeight: 'bold'}}>THE WEDDING OF</p>
       
-      <h1 className="main-title">Doni & Naura</h1>
+      <h1 className="main-title">Adam & Nara</h1>
 
       <div className="ornamen-frame-wrapper">
         <img src={ornamenDaun} className="ornamen-img" alt="frame" />
