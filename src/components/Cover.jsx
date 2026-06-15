@@ -3,7 +3,7 @@ import ornamenDaun from "/ornamen-bg.png";
 import prewed from "/prewed.jpg";
 import { FaEnvelope } from "react-icons/fa";
 
-function Cover({ openInvitation }) {
+function Cover({ openInvitation, guestName }) {
   return (
     <section 
       className="cover-container"
@@ -26,7 +26,7 @@ function Cover({ openInvitation }) {
 
       <div className="guest-info">
         <p style={{color: '#1e3529'}}>Kepada Yth.</p>
-        <h3 style={{color: '#1e3529'}}>Nama Tamu</h3>
+        <h3 style={{color: '#1e3529'}}>{guestName}</h3>
       </div>
 
       <button className="open-btn" onClick={openInvitation}>
