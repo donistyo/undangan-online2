@@ -83,8 +83,6 @@ export default function RSVP() {
             {
               nama,
               kehadiran,
-              jumlah_hadir:
-                kehadiran === "hadir" ? 1 : 0,
               ucapan,
             },
           ]);
@@ -102,9 +100,10 @@ export default function RSVP() {
         setUcapan("");
 
       } catch (err) {
-        console.error(err);
+        console.error("RSVP Error:", err);
 
-        setSuccessMessage("❌ Gagal menyimpan RSVP");
+        const msg = err.message || err.error_description || JSON.stringify(err);
+        setSuccessMessage(`❌ Gagal: ${msg}`);
       } finally {
         setLoading(false);
       }
