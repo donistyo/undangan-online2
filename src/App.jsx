@@ -201,7 +201,6 @@ function App() {
     if (!isInvitationOpen) return;
     if (!autoScrollEnabled) return;
 
-<<<<<<< HEAD
     let animationFrameId;
     const scrollSpeed = 45;
 
@@ -224,36 +223,6 @@ function App() {
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [isInvitationOpen, autoScrollEnabled]);
-=======
-    let raf;
-
-    const scroll = () => {
-      const maxScroll =
-        document.documentElement.scrollHeight -
-        window.innerHeight;
-
-      if (window.scrollY >= maxScroll) {
-        cancelAnimationFrame(raf);
-        return;
-      }
-
-      window.scrollTo(
-        0,
-        window.scrollY + 0.7
-      );
-
-      raf = requestAnimationFrame(scroll);
-    };
-
-    raf = requestAnimationFrame(scroll);
-
-    return () =>
-      cancelAnimationFrame(raf);
-  }, [
-    isInvitationOpen,
-    autoScrollEnabled,
-  ]);
->>>>>>> 48bf3817504749a2899361155b9dcd529dde843c
 
   return (
     <div className="app">
