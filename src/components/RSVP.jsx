@@ -12,6 +12,8 @@ export default function RSVP() {
   const [ucapanList, setUcapanList] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const [showGift, setShowGift] = useState(false);
+
   const loadUcapan = async () => {
     const { data, error } = await supabase
       .from("rsvp")
@@ -184,6 +186,41 @@ export default function RSVP() {
             : "Kirim RSVP"}
         </button>
       </form>
+      <div className="gift-section">
+        <h3 className="gift-title">
+          🎁 Kirim Hadiah
+        </h3>
+
+        <p className="gift-subtitle">
+          Doa restu Anda merupakan hadiah terindah bagi kami.
+          Namun jika ingin memberikan tanda kasih, dapat melalui:
+        </p>
+
+        <button
+          className="btn-gift"
+          onClick={() => setShowGift(!showGift)}
+        >
+          {showGift
+            ? "Sembunyikan Rekening"
+            : "Lihat Rekening"}
+        </button>
+
+        {showGift && (
+          <div className="gift-card">
+            <div className="bank-item">
+              <h4>BCA</h4>
+              <p>1234567890</p>
+              <small>a.n. Adam Pratama</small>
+            </div>
+
+            <div className="bank-item">
+              <h4>Mandiri</h4>
+              <p>9876543210</p>
+              <small>a.n. Nara Putri</small>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="guestbook-section">
         <h3 className="guestbook-title">
           Ucapan & Doa Restu

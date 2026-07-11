@@ -28,7 +28,7 @@ export default function Couple() {
             />
           </div>
 
-          <h3>Doni Pratama</h3>
+          <h3>Adam Pratama</h3>
 
           <p className="couple-desc">Putra dari</p>
           <p className="couple-parent">Bapak Ahmad</p>
@@ -57,7 +57,7 @@ export default function Couple() {
             />
           </div>
 
-          <h3>Naura Azzahra</h3>
+          <h3>Nara Azzahra</h3>
 
           <p className="couple-desc">Putri dari</p>
           <p className="couple-parent">Bapak Yusuf</p>

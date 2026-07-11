@@ -23,12 +23,17 @@ function App() {
   const [isInvitationOpen, setIsInvitationOpen] = useState(false);
 
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
-  const [offsetY, setOffsetY] = useState(0);
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(false);
+  //const [offsetY, setOffsetY] = useState(0);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const params = new URLSearchParams(window.location.search);
+
+  const guestName =
+    params.get("to") || "Tamu Undangan";
 
   // Loading Screen
   useEffect(() => {
@@ -75,7 +80,6 @@ function App() {
   // Open Invitation
   const handleOpenInvitation = async () => {
     setIsInvitationOpen(true);
-    setAutoScrollEnabled(true); // ⬅️ WAJIB
 
     try {
       if (audioRef.current) {
@@ -87,8 +91,16 @@ function App() {
     }
 
     setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }, 100);
+
+    // mulai auto scroll setelah 5 detik
+    setTimeout(() => {
+      setAutoScrollEnabled(true);
+    }, 5000);
   };
 
   useEffect(() => {
@@ -139,24 +151,44 @@ function App() {
     return () => observer.disconnect();
   }, [isInvitationOpen, autoScrollEnabled]);
 
+  useEffect(() => {
+    console.log(
+      "Auto Scroll:",
+      autoScrollEnabled
+    );
+  }, [autoScrollEnabled]);
+
   // Progress Bar + Parallax
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const winScroll =
-        document.documentElement.scrollTop;
+      if (ticking) return;
 
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+      ticking = true;
 
-      const progress =
-        (winScroll / height) * 100;
+      requestAnimationFrame(() => {
+        const winScroll =
+          document.documentElement.scrollTop;
 
-      setScrollProgress(progress);
-      setOffsetY(window.pageYOffset);
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+
+        setScrollProgress(
+          (winScroll / height) * 100
+        );
+
+        //setOffsetY(window.pageYOffset);
+
+        ticking = false;
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener(
+      "scroll",
+      handleScroll
+    );
 
     return () =>
       window.removeEventListener(
@@ -169,6 +201,7 @@ function App() {
     if (!isInvitationOpen) return;
     if (!autoScrollEnabled) return;
 
+<<<<<<< HEAD
     let animationFrameId;
     const scrollSpeed = 45;
 
@@ -191,6 +224,36 @@ function App() {
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [isInvitationOpen, autoScrollEnabled]);
+=======
+    let raf;
+
+    const scroll = () => {
+      const maxScroll =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
+
+      if (window.scrollY >= maxScroll) {
+        cancelAnimationFrame(raf);
+        return;
+      }
+
+      window.scrollTo(
+        0,
+        window.scrollY + 0.7
+      );
+
+      raf = requestAnimationFrame(scroll);
+    };
+
+    raf = requestAnimationFrame(scroll);
+
+    return () =>
+      cancelAnimationFrame(raf);
+  }, [
+    isInvitationOpen,
+    autoScrollEnabled,
+  ]);
+>>>>>>> 48bf3817504749a2899361155b9dcd529dde843c
 
   return (
     <div className="app">
@@ -233,15 +296,11 @@ function App() {
           openInvitation={
             handleOpenInvitation
           }
+          guestName={guestName}
         />
       ) : (
         <div
           className="main-menu-wrapper page-enter"
-          style={{
-            backgroundPositionY: `${
-              offsetY * 0.25
-            }px`,
-          }}
         >
           <div className="floating-menu">
             <button

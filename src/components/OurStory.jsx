@@ -22,54 +22,91 @@ const stories = [
   },
 ];
 
-export default function OurStory() {
-  const [visibleCount, setVisibleCount] = useState(0);
+export default function OurStory({
+  autoScrollEnabled = false,
+}) {
+  const [visibleCount, setVisibleCount] =
+    useState(0);
+
   const ref = useRef(null);
 
-  // reset + autoplay setiap masuk section
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleCount(0); // reset tiap masuk
-          }
-        });
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        if (autoScrollEnabled) {
+          setVisibleCount(1);
+        } else {
+          setVisibleCount(stories.length);
+        }
       },
-      { threshold: 0.5 }
+      {
+        threshold: 0.3,
+      }
     );
 
-    if (ref.current) observer.observe(ref.current);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
 
     return () => observer.disconnect();
-  }, []);
+  }, [autoScrollEnabled]);
 
-  // auto reveal step-by-step
   useEffect(() => {
-    if (visibleCount >= stories.length) return;
+    if (!autoScrollEnabled) return;
+
+    if (
+      visibleCount === 0 ||
+      visibleCount >= stories.length
+    )
+      return;
 
     const timer = setTimeout(() => {
-      setVisibleCount((v) => v + 1);
+      setVisibleCount((prev) => prev + 1);
     }, 900);
 
     return () => clearTimeout(timer);
-  }, [visibleCount]);
+  }, [visibleCount, autoScrollEnabled]);
 
   return (
-    <div ref={ref} className="event-card-premium story-card">
-      <img src={ornamenDaun} className="leaf-ornament top-left" />
-      <img src={ornamenDaun} className="leaf-ornament bottom-right" />
+    <div
+      ref={ref}
+      className="event-card-premium story-card"
+    >
+      <img
+        src={ornamenDaun}
+        className="leaf-ornament top-left"
+        alt=""
+      />
 
-      <h2 className="event-title">Our Story</h2>
+      <img
+        src={ornamenDaun}
+        className="leaf-ornament bottom-right"
+        alt=""
+      />
+
+      <h2 className="event-title">
+        Our Story
+      </h2>
 
       <div className="story-timeline">
-        {stories.slice(0, visibleCount).map((item, i) => (
-          <div key={i} className="story-item">
-            <div className="story-year">{item.year}</div>
-            <h4>{item.title}</h4>
-            <p>{item.desc}</p>
-          </div>
-        ))}
+        {stories
+          .slice(0, visibleCount)
+          .map((item, i) => (
+            <div
+              key={i}
+              className="story-item show"
+            >
+              <div className="story-year">
+                {item.year}
+              </div>
+
+              <h4>{item.title}</h4>
+
+              <p>{item.desc}</p>
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function ThankYou() {
       </p>
 
       <h3 className="thankyou-couple">
-        Doni & Naura
+        Adam & Nara
       </h3>
     </div>
   );
