@@ -109,6 +109,13 @@ function App() {
   useEffect(() => {
     if (!isInvitationOpen) return;
 
+    if (autoScrollEnabled) {
+      document.querySelectorAll(".fade-section").forEach((el) => {
+        el.classList.add("show");
+      });
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -130,7 +137,7 @@ function App() {
     });
 
     return () => observer.disconnect();
-  }, [isInvitationOpen]);
+  }, [isInvitationOpen, autoScrollEnabled]);
 
   // Progress Bar + Parallax
   useEffect(() => {
@@ -162,23 +169,27 @@ function App() {
     if (!isInvitationOpen) return;
     if (!autoScrollEnabled) return;
 
-    let current = 0;
-    const sections = document.querySelectorAll("section");
+    let animationFrameId;
+    const scrollSpeed = 45;
 
-    const interval = setInterval(() => {
-      if (current >= sections.length) {
-        clearInterval(interval);
+    const smoothScroll = () => {
+      const maxScroll =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const currentScroll = window.pageYOffset;
+
+      if (currentScroll >= maxScroll) {
+        setAutoScrollEnabled(false);
         return;
       }
 
-      sections[current].scrollIntoView({
-        behavior: "smooth",
-      });
+      window.scrollBy(0, scrollSpeed * (1 / 60));
+      animationFrameId = requestAnimationFrame(smoothScroll);
+    };
 
-      current++;
-    }, 3000); // delay per section
+    animationFrameId = requestAnimationFrame(smoothScroll);
 
-    return () => clearInterval(interval);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [isInvitationOpen, autoScrollEnabled]);
 
   return (
@@ -200,13 +211,19 @@ function App() {
         className={`curtain-loader ${
           !isLoading ? "open" : ""
         }`}
+        style={{
+          backgroundImage: "url(/bg-loading.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
       >
         <div className="curtain-left"></div>
         <div className="curtain-right"></div>
 
         <div className="loader-content">
           <p>Wedding of</p>
-          <h1>Doni & Naura</h1>
+          <h1>Adam & Nara</h1>
           <div className="loading-bar"></div>
         </div>
       </div>
