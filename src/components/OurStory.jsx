@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import ornamenDaun from "/ornamen-bg.png";
+import prewed2 from "../assets/prewed2.jpeg";
 
 const stories = [
   {
@@ -89,6 +90,10 @@ export default function OurStory({
       <h2 className="event-title">
         Our Story
       </h2>
+
+      <div className="story-fog-image">
+        <img src={prewed2} alt="" />
+      </div>
 
       <div className="story-timeline">
         {stories

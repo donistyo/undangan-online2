@@ -23,13 +23,15 @@ export default function Maps() {
         </div>
 
         <p>
-          Gedung Bahagia
+          Jl. Balaikota No.17-19
           <br />
-          Jakarta Selatan
+          Kandangsapi, Kec. Panggungrejo
+          <br />
+          Kota Pasuruan, Jawa Timur 67125
         </p>
 
         <a
-          href="https://maps.google.com"
+          href="https://www.google.com/maps/dir/?api=1&destination=Jl.+Balaikota+No.17-19,+Kandangsapi,+Kec.+Panggungrejo,+Kota+Pasuruan,+Jawa+Timur+67125"
           target="_blank"
           rel="noreferrer"
           className="btn-maps"
